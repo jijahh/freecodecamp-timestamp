@@ -34,15 +34,17 @@ app.get("/api/:date?", (req, res) => {
     let currentDate = new Date();
     res.json({ unix: currentDate.getTime(), utc: currentDate.toUTCString() });
   } else {
-    try {
-      let date;
-      if (/^\d+$/.test(dateString)) { // Use regex to check date format if all integers
-        date = new Date(parseInt(dateString));
-      } else {
-        date = new Date(dateString);
+      if (new Date(dateString)){
+        let date;
+        if (/^\d+$/.test(dateString)) { // Use regex to check date format if all integers
+          date = new Date(parseInt(dateString));
+        } else {
+          date = new Date(dateString);
+        }
+        console.log(date);
+        res.json({ unix: date.getTime(), utc: date.toUTCString() });
       }
-      res.json({ unix: date.getTime(), utc: date.toUTCString() });
-    } catch (error) {
+    else {
       res.json({ error: "Invalid Date" });
     }
   }
